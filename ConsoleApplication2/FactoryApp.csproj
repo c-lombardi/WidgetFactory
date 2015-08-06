@@ -40,7 +40,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WidgetFactory">
-      <HintPath>..\..\..\Visual Studio 2013\Projects\FactoryApp\ConsoleApplication2\bin\Debug\WidgetFactory.dll</HintPath>
+      <HintPath>..\..\..\Visual Studio 2013\Projects\FactoryApp\TestFactory\bin\Debug\WidgetFactory.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
