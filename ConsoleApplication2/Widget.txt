@@ -1,0 +1,9 @@
+car
+car
+motorcycle
+truck
+car
+truck
+motorcycle
+car
+car

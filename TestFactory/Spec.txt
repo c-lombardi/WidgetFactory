@@ -1,0 +1,3 @@
+motorcycle: wheel, wheel, engine, seat, handlebar
+car: wheel, wheel, wheel, wheel, engine, seat, steering wheel, sunroof
+truck: wheel, wheel, wheel, wheel, engine, seat, steering wheel, truck-bed
