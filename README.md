@@ -8,3 +8,5 @@
 
 Note: Anything with a comment to a url is the link that I referenced to complete the code that is next to it.
 
+The paths that I used for testing in the command line arguments are: ../../Spec.xml ../../Widget.xml
+
