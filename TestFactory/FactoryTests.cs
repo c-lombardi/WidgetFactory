@@ -29,6 +29,7 @@ namespace TestFactory
         {
             _f = new Factory();
         }
+
         [TestMethod]
         public void ParseOrderFileTest()
         {
@@ -117,6 +118,7 @@ namespace TestFactory
                 }
             }
         }
+
         [TestMethod]
         [ExpectedException(typeof(WidgetNotSpecedException))]//https://msdn.microsoft.com/en-us/library/ms162365(v=vs.110).aspx
         public void ParseOrderFileWidgetNotSpecedException()
@@ -149,6 +151,8 @@ namespace TestFactory
             allWidgetsNode.AppendChild(widgetNode);
             _f.ReadSpecFileLines(allWidgetsNode, 10);
         }
+
+        [TestMethod]
         [ExpectedException(typeof(LineEmptyException))]
         public void ParseSpecFileExpectLineEmptyException()
         {
@@ -157,9 +161,10 @@ namespace TestFactory
             allWidgetsNode.InnerText = " ";
             _f.ReadSpecFileLines(allWidgetsNode, 10);
         }
+
         [TestMethod]
         [ExpectedException(typeof(MalformedLineException))]
-        public void ParseSpecFileExpectMalformedLineEmptyException()
+        public void ParseSpecFileExpectMalformedLineException()
         {
             var doc = new XmlDocument();
             doc.LoadXml(@"<widget>
