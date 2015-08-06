@@ -125,9 +125,9 @@ namespace ConsoleApplication2
                 {
                     Trace.WriteLine(String.Format(NoWidgetNameException.message, ex.Message));
                 }
-                catch (WidgetNotSpecedException ex)
+                catch (MalformedOrderFileException ex)
                 {
-                    Trace.WriteLine(String.Format(WidgetNotSpecedException.message, ex.Message));
+                    Trace.WriteLine(String.Format(MalformedOrderFileException.message, ex.Message));
                 }
             }
             return _removeSpacesFromBeginningAndEnd(widgetListToReturn);
@@ -140,7 +140,7 @@ namespace ConsoleApplication2
                 throw new NoWidgetNameException();
             var currentWidgetNames = specedWidgets.Select(w => w.WidgetName);
             if (!currentWidgetNames.Contains(widgetName))
-                throw new WidgetNotSpecedException(widgetName);
+                throw new MalformedOrderFileException(widgetName);
             return widgetName;
         }
 

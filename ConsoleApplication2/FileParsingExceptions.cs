@@ -49,4 +49,13 @@ namespace ConsoleApplication2
         public WidgetNotSpecedException(string message) : base(message) { }
         public WidgetNotSpecedException(string message, Exception inner) : base(message, inner) { }
     }
+
+
+    public class MalformedOrderFileException : Exception
+    {
+        public const string message = "File {0} was malformed. Proper formation is: <allWidgets><widget>WidgetName</widget>...</allWidgets>";
+        public MalformedOrderFileException() { }
+        public MalformedOrderFileException(string message) : base(message) { }
+        public MalformedOrderFileException(string message, Exception inner) : base(message, inner) { }
+    }
 }
