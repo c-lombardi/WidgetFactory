@@ -12,9 +12,6 @@ namespace FactoryApp
 {
     public class Factory : IFactory
     {
-        const string WidgetNameDelimiter = ":";
-        const string WidgetPartDelimiter = ",";
-
         private Func<List<String>, List<String>> RemoveSpacesFromBeginningAndEnd = x =>
         {
             var stringsWithoutSpacesAtBeginningOrEnd = new List<String>();
