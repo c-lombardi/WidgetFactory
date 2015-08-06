@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using ConsoleApplication2;
 using WidgetFactory;
 
 namespace ConsoleApplication2
