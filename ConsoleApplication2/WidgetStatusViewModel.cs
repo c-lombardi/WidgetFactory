@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WidgetFactory;
-
-namespace FactoryApp
+﻿namespace ConsoleApplication2
 {
     public class WidgetStatusViewModel
     {
-        public bool isAvailable { get; set; }
-        public string partSerialNumber { get; set; }
+        public bool IsAvailable { get; set; }
+        public string PartSerialNumber { get; set; }
     }
 }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using WidgetFactory;
 
-namespace FactoryApp
+namespace ConsoleApplication2
 {
     public class SpecedWidget
     {
@@ -14,8 +10,8 @@ namespace FactoryApp
     }
     public class SpecedPart
     {
-        public string partId { get; set; }
-        public int numberOfPart { get; set; }
+        public string PartId { get; set; }
+        public int NumberOfPart { get; set; }
     }
     public class Widget
     {
