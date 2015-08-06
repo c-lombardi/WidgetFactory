@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WidgetFactory;
-
+using System.Xml;
 namespace FactoryApp
 {
     public class Factory : IFactory
@@ -27,16 +27,19 @@ namespace FactoryApp
 
         public List<SpecedWidget> ParseSpecFile(string pathToFile) //http://stackoverflow.com/questions/8037070/whats-the-fastest-way-to-read-a-text-file-line-by-line
         {
-            var fileLines = File.ReadLines(pathToFile);
-            var wh = new Warehouse();
-            var lineCount = 0;
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(pathToFile);
+            var childNodes = xmlDoc.DocumentElement.ChildNodes;
+            if(childNodes.Count == 0)
+                throw new NoWidgetsException(pathToFile);
+            var widgetCounter = 0;
             var widgetsSpeced = new List<SpecedWidget>();
-            foreach (var line in fileLines)
+            foreach(XmlNode widget in childNodes)
             {
-                lineCount++;
                 try
                 {
-                    widgetsSpeced.Add(ReadSpecFileLines(line, lineCount));
+                    widgetCounter++;
+                    widgetsSpeced.Add(ReadSpecFileLines(widget, widgetCounter));
                 }
                 // handle exceptions to continue through the loop and not ignore the rest of the file to try and meet client demands as best as possible
                 catch (LineEmptyException ex)
@@ -56,36 +59,37 @@ namespace FactoryApp
                     Trace.WriteLine(String.Format(MalformedLineException.message, ex.Message));
                 }
             }
-            if (lineCount.Equals(0))
-            {
-                throw new NoWidgetsException(pathToFile);
-            }
             return widgetsSpeced;
         }
 
         //Parse the file
-        public SpecedWidget ReadSpecFileLines(String line, int lineCount)
+        public SpecedWidget ReadSpecFileLines(XmlNode widget, int widgetCounter)
         {
-
-            //Empty Line check
-            if (line.Length.Equals(0))
-                throw new LineEmptyException(lineCount.ToString());
-            //No Widget Name check
-            var firstIndexOfColon = line.IndexOf(WidgetNameDelimiter);
-            if (firstIndexOfColon == -1)
-                throw new MalformedLineException(lineCount.ToString());
-            var widgetName = line.Substring(0, firstIndexOfColon);
-            if (widgetName.Length.Equals(0))
-                throw new NoWidgetNameException(lineCount.ToString());
-            //No Parts Check
-            var partIdsCommaDelimitedList = line.Substring((firstIndexOfColon + 1), (line.Length - firstIndexOfColon - 1));
-            var commaCount = Regex.Matches(partIdsCommaDelimitedList, WidgetPartDelimiter).Count; //http://stackoverflow.com/questions/3016522/count-the-number-of-times-a-string-appears-within-a-string
-            if ((partIdsCommaDelimitedList.Length.Equals(0)) || (commaCount.Equals(0)))
-                throw new NoPartsException(lineCount.ToString());
-            //Malformed Line Check
-            var parsedPartIds = RemoveSpacesFromBeginningAndEnd(partIdsCommaDelimitedList.Split(WidgetPartDelimiter.ToArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
-            if ((parsedPartIds.Count.Equals(0)) || (parsedPartIds.Count != (commaCount + 1))) //There should be 1 less comma than there are parts
-                throw new MalformedLineException(lineCount.ToString());
+            if (!widget.HasChildNodes)
+                throw new LineEmptyException(widgetCounter.ToString());
+            var widgetName = widget.FirstChild.InnerText;
+            if (widgetName.Length == 0)
+                throw new NoWidgetNameException();
+            var specedWidgetList = new List<SpecedWidget>();
+            var widgetPartNodes = widget.SelectNodes("part");
+            if (widgetPartNodes.Count == 0)
+                throw new NoPartsException(widgetName);
+            StringBuilder commaDelimitedPartString = new StringBuilder();
+            foreach (XmlNode widgetProperty in widgetPartNodes)
+            {
+                var partId = widgetProperty.InnerText;
+                if (String.IsNullOrEmpty(partId))
+                    throw new MalformedLineException(widgetCounter.ToString());
+                if (widget.LastChild != widgetProperty)
+                {
+                    commaDelimitedPartString.Append(partId + ",");
+                }
+                else
+                {
+                    commaDelimitedPartString.Append(partId);
+                }
+            }
+            var parsedPartIds = RemoveSpacesFromBeginningAndEnd(commaDelimitedPartString.ToString().Split(WidgetPartDelimiter.ToArray(), StringSplitOptions.RemoveEmptyEntries).ToList());
             return new SpecedWidget() { WidgetName = widgetName, Parts = parsedPartIds.Distinct().Select(s => new SpecedPart() { partId = s, numberOfPart = parsedPartIds.Count(c => s == c) }) };
         }
 
@@ -118,16 +122,19 @@ namespace FactoryApp
 
         public List<String> ParseOrderFile(string pathToFile, List<SpecedWidget> specedWidgets)
         {
-            var fileLines = File.ReadLines(pathToFile);
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(pathToFile);
+            var childNodes = xmlDoc.DocumentElement.ChildNodes;
+            if (childNodes.Count == 0)
+                throw new NoWidgetsException(pathToFile);
+            var widgetCounter = 0;
             var widgetListToReturn = new List<String>();
-            var wh = new Warehouse();
-            var lineCount = 0;
-            foreach (var widgetName in fileLines)
+            foreach (XmlNode widget in childNodes)
             {
-                lineCount++;
                 try
                 {
-                    widgetListToReturn.Add(ReadOrderFileLines(widgetName, lineCount, specedWidgets));
+                    widgetCounter++;
+                    widgetListToReturn.Add(ReadOrderFileLines(widget, widgetCounter, specedWidgets));
                 }
                 catch (NoWidgetNameException ex)
                 {
@@ -138,18 +145,15 @@ namespace FactoryApp
                     Trace.WriteLine(String.Format(WidgetNotSpecedException.message, ex.Message));
                 }
             }
-            if (lineCount.Equals(0))
-            {
-                throw new NoWidgetsException(pathToFile);
-            }
             return RemoveSpacesFromBeginningAndEnd(widgetListToReturn);
         }
 
-        public string ReadOrderFileLines(string widgetName, int lineCount, List<SpecedWidget> specedWidgets)
+        public string ReadOrderFileLines(XmlNode widget, int widgetCounter, List<SpecedWidget> specedWidgets)
         {
-            if (widgetName.Length.Equals(0))
-                throw new NoWidgetNameException(lineCount.ToString());
-            var currentWidgetNames = specedWidgets.Select(widget => widget.WidgetName);
+            var widgetName = widget.InnerText;
+            if (widgetName.Length == 0)
+                throw new NoWidgetNameException();
+            var currentWidgetNames = specedWidgets.Select(w => w.WidgetName);
             if (!currentWidgetNames.Contains(widgetName))
                 throw new WidgetNotSpecedException(widgetName);
             return widgetName;

@@ -6,14 +6,16 @@ using WidgetFactory;
 using System.Collections.Generic;
 using System.Linq;
 using Rhino.Mocks;
+using System.Xml;
+
 namespace TestFactory
 {
     [TestClass]
     public class FactoryTests
     {
         private Factory f;
-        private const string specFileName = "../../Spec.txt";
-        private const string orderFilename = "../../Widget.txt";
+        private const string specFileName = "../../Spec.xml";
+        private const string orderFilename = "../../Widget.xml";
         public const string EmptyLineFileName = "EmptyLineException.txt";
         public const string NoWidgetNameFileName = "NoWidgetNameException.txt";
         private const string motorCycleName = "motorcycle";
@@ -100,49 +102,75 @@ namespace TestFactory
             }
         }
         [TestMethod]
-        [ExpectedException(typeof(WidgetNotSpecedException))]
+        [ExpectedException(typeof(WidgetNotSpecedException))]//https://msdn.microsoft.com/en-us/library/ms162365(v=vs.110).aspx
         public void ParseOrderFileWidgetNotSpecedException()
         {
-            f.ReadOrderFileLines("widgetName", 0, new List<SpecedWidget>());
+            XmlDocument doc = new XmlDocument();
+            var dummyNode = doc.CreateNode("text", "widget", "NameSpace");
+            dummyNode.InnerText = "test";
+            f.ReadOrderFileLines(dummyNode, 0, new List<SpecedWidget>());
         }
 
         [TestMethod]
         [ExpectedException(typeof(NoWidgetNameException))]
         public void ParseOrderFileNoWidgetNameException()
         {
-            f.ReadOrderFileLines("", 0, new List<SpecedWidget>());
+            XmlDocument doc = new XmlDocument();
+            var dummyNode = doc.CreateNode("text", "widget", "NameSpace");
+            f.ReadOrderFileLines(dummyNode, 0, new List<SpecedWidget>());
         }
 
         [TestMethod]
         [ExpectedException(typeof(NoPartsException))]
         public void ParseSpecFileExpectNoPartsException()
         {
-            f.ReadSpecFileLines("widgetName:", 10);
+            XmlDocument doc = new XmlDocument();
+            var allWidgetsNode = doc.CreateNode("element", "allWidgets", "NameSpace");
+            var widgetNode = doc.CreateNode("element", "widget", "NameSpace");
+            var widgetNameNode = doc.CreateNode("text", "widgetName", "NameSpace");
+            widgetNameNode.InnerText = "testName";
+            widgetNode.AppendChild(widgetNameNode);
+            allWidgetsNode.AppendChild(widgetNode);
+            f.ReadSpecFileLines(allWidgetsNode, 10);
+        }
+        [ExpectedException(typeof(LineEmptyException))]
+        public void ParseSpecFileExpectLineEmptyException()
+        {
+            XmlDocument doc = new XmlDocument();
+            var allWidgetsNode = doc.CreateNode("text", "allWidets", "NameSpace");
+            allWidgetsNode.InnerText = " ";
+            f.ReadSpecFileLines(allWidgetsNode, 10);
         }
         [TestMethod]
         [ExpectedException(typeof(MalformedLineException))]
         public void ParseSpecFileExpectMalformedLineEmptyException()
         {
-            f.ReadSpecFileLines(" ", 10);
-        }
-        [TestMethod]
-        [ExpectedException(typeof(MalformedLineException))]
-        public void ParseSpecFileExpectMalformedLineCommasException()
-        {
-            f.ReadSpecFileLines("widgetName: wheel,, engine", 10);
-        }
-        [TestMethod]
-        [ExpectedException(typeof(LineEmptyException))]
-        public void ParseSpecFileExpectLineEmptyException()
-        {
-            f.ReadSpecFileLines("", 10);
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(@"<widget>
+		                    <widgetName>motorcycle</widgetName>
+		                    <part></part>
+		                    <part>wheel</part>
+		                    <part>engine</part>
+		                    <part>seat</part>
+		                    <part>handlebar</part>
+	                    </widget>");
+            f.ReadSpecFileLines(doc.FirstChild, 10);
         }
 
         [TestMethod]
         [ExpectedException(typeof(NoWidgetNameException))]
         public void ParseSpecFileExpectNoWidgetNameException()
         {
-            f.ReadSpecFileLines(": wheel, wheel, engine", 10);
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(@"<widget>
+		                    <widgetName></widgetName>
+		                    <part>wheel</part>
+		                    <part>wheel</part>
+		                    <part>engine</part>
+		                    <part>seat</part>
+		                    <part>handlebar</part>
+	                    </widget>");
+            f.ReadSpecFileLines(doc.FirstChild, 10);
         }
 
         [TestCleanup]

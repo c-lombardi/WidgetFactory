@@ -39,9 +39,10 @@
       <HintPath>..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
     <Reference Include="WidgetFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\WidgetFactory.dll</HintPath>
+      <HintPath>..\..\..\Visual Studio 2013\Projects\FactoryApp\TestFactory\bin\Debug\WidgetFactory.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>

@@ -24,7 +24,7 @@ namespace FactoryApp
 
     public partial class NoPartsException : Exception
     {
-        public const string message = "There were no parts listed on line {0}";
+        public const string message = "There were no parts listed on widget {0}";
         public NoPartsException() { }
         public NoPartsException(string message) : base(message) { }
         public NoPartsException(string message, Exception inner) : base(message, inner) { }
@@ -40,7 +40,7 @@ namespace FactoryApp
 
     public partial class MalformedLineException : Exception
     {
-        public const string message = "Line {0} was malformed. Proper formation is: WidgetName: Part1, Part2, Part3, ...";
+        public const string message = "Line {0} was malformed. Proper formation is: <allWidgets><widget><widgetName></widgetName><part></part><part></part></widget>...</allWidgets>";
         public MalformedLineException() { }
         public MalformedLineException(string message) : base(message) { }
         public MalformedLineException(string message, Exception inner) : base(message, inner) { }

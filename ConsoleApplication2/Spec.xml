@@ -1,0 +1,32 @@
+<allWidgets>
+	<widget>
+		<widgetName>motorcycle</widgetName>
+		<part>wheel</part>
+		<part>wheel</part>
+		<part>engine</part>
+		<part>seat</part>
+		<part>handlebar</part>
+	</widget>
+	<widget>
+		<widgetName>car</widgetName>
+		<part>wheel</part>
+		<part>wheel</part>
+		<part>wheel</part>
+		<part>wheel</part>
+		<part>engine</part>
+		<part>seat</part>
+		<part>steering wheel</part>
+		<part>sunroof</part>
+	</widget>
+	<widget>
+		<widgetName>truck</widgetName>
+		<part>wheel</part>
+		<part>wheel</part>
+		<part>wheel</part>
+		<part>wheel</part>
+		<part>engine</part>
+		<part>seat</part>
+		<part>steering wheel</part>
+		<part>truck-bed</part>
+	</widget>
+</allWidgets>
