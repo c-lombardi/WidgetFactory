@@ -1,9 +1,11 @@
-<widget>car</widget>
-<widget>car</widget>
-<widget>motorcycle</widget>
-<widget>truck</widget>
-<widget>car</widget>
-<widget>truck</widget>
-<widget>motorcycle</widget>
-<widget>car</widget>
-<widget>car</widget>
+<allWidgets>
+	<widget>car</widget>
+	<widget>car</widget>
+	<widget>motorcycle</widget>
+	<widget>truck</widget>
+	<widget>car</widget>
+	<widget>truck</widget>
+	<widget>motorcycle</widget>
+	<widget>car</widget>
+	<widget>car</widget>
+</allWidgets>

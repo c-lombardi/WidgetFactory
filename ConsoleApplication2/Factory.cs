@@ -171,7 +171,7 @@ namespace FactoryApp
             foreach (var widget in OrderedWidgetsThatAreSpeced)
             {
                 Widget w = new Widget();
-                bool Assembled = false;
+                bool Assembled = true;
                 foreach (var part in widget.Parts)
                 {
                     try
