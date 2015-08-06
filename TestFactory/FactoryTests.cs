@@ -118,8 +118,8 @@ namespace TestFactory
             }
         }
         [TestMethod]
-        [ExpectedException(typeof(MalformedOrderFileException))]//https://msdn.microsoft.com/en-us/library/ms162365(v=vs.110).aspx
-        public void ParseOrderFileMalformedOrderFileException()
+        [ExpectedException(typeof(WidgetNotSpecedException))]//https://msdn.microsoft.com/en-us/library/ms162365(v=vs.110).aspx
+        public void ParseOrderFileWidgetNotSpecedException()
         {
             var doc = new XmlDocument();
             var dummyNode = doc.CreateNode("text", "widget", "NameSpace");
