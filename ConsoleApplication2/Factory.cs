@@ -13,7 +13,7 @@ namespace ConsoleApplication2
         const string WidgetPartDelimiter = ",";
         private readonly Func<List<String>, List<String>> _removeSpacesFromBeginningAndEnd = x => x.Select(str => str.Trim()).ToList();
 
-        public List<SpecedWidget> ParseSpecFile(string pathToFile) //http://stackoverflow.com/questions/8037070/whats-the-fastest-way-to-read-a-text-file-line-by-line
+        public List<SpecedWidget> ParseSpecFile(string pathToFile) //
         {
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(pathToFile);
