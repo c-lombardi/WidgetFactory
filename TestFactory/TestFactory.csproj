@@ -42,7 +42,7 @@
     <Reference Include="System.XML" />
     <Reference Include="WidgetFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Visual Studio 2013\Projects\FactoryApp\TestFactory\bin\Debug\WidgetFactory.dll</HintPath>
+      <HintPath>..\WidgetFactory.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>

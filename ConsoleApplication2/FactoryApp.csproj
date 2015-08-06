@@ -39,8 +39,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WidgetFactory">
-      <HintPath>..\..\..\Visual Studio 2013\Projects\FactoryApp\TestFactory\bin\Debug\WidgetFactory.dll</HintPath>
+    <Reference Include="WidgetFactory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WidgetFactory.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
